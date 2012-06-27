@@ -1,3 +1,4 @@
+path    = require "path"
 express = require "express"
 
 app = module.exports = express.createServer()
@@ -13,6 +14,13 @@ app.configure "development", ->
 
 app.configure "production", ->
     app.use express.errorHandler()
+
+app.get "/presets/:id?", (req, res)->
+    name = "000#{req.params.id}".substr(-3)
+    filepath = "presets/#{name}.js"
+    filepath = "presets/000.js" unless path.existsSync filepath
+    res.header "Content-Type","text/plain"
+    res.sendfile filepath
 
 app.get "/", (req, res)->
     res.sendfile "#{__dirname}/views/index.html"
