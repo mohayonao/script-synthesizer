@@ -16,7 +16,7 @@ var Preset = [
     "Glockenspiel (NOT IMPLEMENTED)",
     "Music Box (NOT IMPLEMENTED)",
     "Vibraphone (NOT IMPLEMENTED)",
-    "Marimba (NOT IMPLEMENTED)",
+    "Marimba",
     "Xylophone (NOT IMPLEMENTED)",
     "TubularBell (NOT IMPLEMENTED)",
     "Dulcimer (NOT IMPLEMENTED)",
