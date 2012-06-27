@@ -1,9 +1,8 @@
 jQuery ->
     timbre.setup {streamsize:512}
-    webi = null
 
-    send = (msg)->
-        webi?.postMessage msg, "*"
+    sender = new webmidilink.Sender 0
+    sender.queue = []
 
     class MMLCommand
         constructor: (name, sign, length, dot)->
@@ -47,7 +46,7 @@ jQuery ->
 
             @seq = ->
                 if samples <= 0
-                    if msg then msg = send msg
+                    sender.queue.shift()?()
                     cmd = fetch()
                     if cmd.name != "r"
                         _midino = timbre.utils.atom(cmd.name.toUpperCase() + (octave-1))
@@ -58,8 +57,9 @@ jQuery ->
                         _midino   = _midino.toString   0x10
                         _velocity = _velocity.toString 0x10
 
-                        send "midi,90,#{_midino},#{_velocity}"
-                        msg = "midi,80,#{_midino},0"
+                        sender.noteOn _midino, _velocity
+                        sender.queue.push ()-> sender.noteOff _midino, _velocity
+
                     _dot = cmd.dot
                     _dot = dot if _dot is 0 and cmd.length is 0
                     _len = cmd.length
@@ -72,15 +72,15 @@ jQuery ->
     mml = T("interval", 0, -> mml.track.seq())
 
     $("#open").on "click", ->
-        webi.close() if webi
+        sender.webi.close() if sender.webi
         url = $("#webi").val() or "/"
-        webi = window.open url, null, "width=900,height=670,scrollbars=yes,resizable=yes"
+        sender.webi = window.open url, null, "width=900,height=670,scrollbars=yes,resizable=yes"
 
     $("#play").on "click", ->
         if mml.isOn
             mml.off()
             $(this).text "play"
-        else if webi != null
+        else if sender.webi != null
             mml.track = new MMLTrack $("#code").val().trim().toLowerCase()
             mml.on()
             $(this).text "stop"

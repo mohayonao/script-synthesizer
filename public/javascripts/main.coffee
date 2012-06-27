@@ -54,16 +54,11 @@ jQuery ->
         if b then interval.on() else interval.off()
 
     # WebMidiLink
-    hex2dec = (s)-> parseInt s, 16
-    webMidiLinkRecv = (e)->
+    receiver = new webmidilink.Receiver 0
 
-        msg = e.data.split ","
-        return unless msg[0] is "midi"
-
-        switch hex2dec(msg[1]) & 0xf0
-            when 0x80 # note-off
-                window.synth?.noteon hex2dec(msg[2])
-            when 0x90 # note-on
-                window.synth?.noteon hex2dec(msg[2]), hex2dec(msg[3])
-
-    window.addEventListener "message", webMidiLinkRecv, false
+    receiver.onNoteOn = (notenumber, velocity)->
+        window.synth?.noteon? notenumber, velocity
+    receiver.onNoteOff = (notenumber, velocity)->
+        window.synth?.noteoff? notenumber, velocity
+    receiver.onAllSoundOff = ()->
+        window.synth?.allSoundOff?()

@@ -2,14 +2,12 @@
 (function() {
 
   jQuery(function() {
-    var MMLCommand, MMLTrack, mml, send, webi;
+    var MMLCommand, MMLTrack, mml, sender;
     timbre.setup({
       streamsize: 512
     });
-    webi = null;
-    send = function(msg) {
-      return webi != null ? webi.postMessage(msg, "*") : void 0;
-    };
+    sender = new webmidilink.Sender(0);
+    sender.queue = [];
     MMLCommand = (function() {
 
       MMLCommand.name = 'MMLCommand';
@@ -77,10 +75,10 @@
           return cmd;
         };
         this.seq = function() {
-          var cmd, _dot, _len, _midino, _velocity;
+          var cmd, _base, _dot, _len, _midino, _velocity;
           if (samples <= 0) {
-            if (msg) {
-              msg = send(msg);
+            if (typeof (_base = sender.queue.shift()) === "function") {
+              _base();
             }
             cmd = fetch();
             if (cmd.name !== "r") {
@@ -95,8 +93,10 @@
               _velocity = (velocity / 15 * 128) | 0;
               _midino = _midino.toString(0x10);
               _velocity = _velocity.toString(0x10);
-              send("midi,90," + _midino + "," + _velocity);
-              msg = "midi,80," + _midino + ",0";
+              sender.noteOn(_midino, _velocity);
+              sender.queue.push(function() {
+                return sender.noteOff(_midino, _velocity);
+              });
             }
             _dot = cmd.dot;
             if (_dot === 0 && cmd.length === 0) {
@@ -124,17 +124,17 @@
     });
     $("#open").on("click", function() {
       var url;
-      if (webi) {
-        webi.close();
+      if (sender.webi) {
+        sender.webi.close();
       }
       url = $("#webi").val() || "/";
-      return webi = window.open(url, null, "width=900,height=670,scrollbars=yes,resizable=yes");
+      return sender.webi = window.open(url, null, "width=900,height=670,scrollbars=yes,resizable=yes");
     });
     return $("#play").on("click", function() {
       if (mml.isOn) {
         mml.off();
         return $(this).text("play");
-      } else if (webi !== null) {
+      } else if (sender.webi !== null) {
         mml.track = new MMLTrack($("#code").val().trim().toLowerCase());
         mml.on();
         return $(this).text("stop");
