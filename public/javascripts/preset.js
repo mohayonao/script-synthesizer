@@ -42,7 +42,7 @@ var Preset = [
     "Guitar Harmonics (NOT IMPLEMENTED)",
 
     // (33..40) Bass
-    "Acoustic Bass (NOT IMPLEMENTED)",
+    "Acoustic Bass",
     "Electric Bass (finger) (NOT IMPLEMENTED)",
     "Electric Bass (pick) (NOT IMPLEMENTED)",
     "Fretless Bass (NOT IMPLEMENTED)",
