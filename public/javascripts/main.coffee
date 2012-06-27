@@ -27,6 +27,7 @@ jQuery ->
         jQuery.get "/presets/#{n}.js", (res)->
             $("#code").val res
             eval_synth res
+    selector.change()
 
     $("#code").on "keydown", (e)->
         if e.ctrlKey and e.keyCode is 32

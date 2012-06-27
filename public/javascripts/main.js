@@ -35,6 +35,7 @@
         return eval_synth(res);
       });
     });
+    selector.change();
     $("#code").on("keydown", function(e) {
       if (e.ctrlKey && e.keyCode === 32) return e.preventDefault();
     });
