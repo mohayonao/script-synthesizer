@@ -22,6 +22,9 @@ app.get "/presets/:id?", (req, res)->
     res.header "Content-Type","text/plain"
     res.sendfile filepath
 
+app.get "/mml", (req, res)->
+    res.sendfile "#{__dirname}/views/mml.html"
+
 app.get "/", (req, res)->
     res.sendfile "#{__dirname}/views/index.html"
 
