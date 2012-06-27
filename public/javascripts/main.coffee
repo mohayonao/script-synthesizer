@@ -24,7 +24,7 @@ jQuery ->
         selector.append $("<option>").text(name).attr("value", i)
     selector.on "change", ->
         n = $(@).val()
-        jQuery.get "/presets/#{n}.js", (res)->
+        jQuery.get "/presets/#{n}", (res)->
             $("#code").val res
             eval_synth res
     selector.change()

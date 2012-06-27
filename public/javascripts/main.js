@@ -30,7 +30,7 @@
     selector.on("change", function() {
       var n;
       n = $(this).val();
-      return jQuery.get("/presets/" + n + ".js", function(res) {
+      return jQuery.get("/presets/" + n, function(res) {
         $("#code").val(res);
         return eval_synth(res);
       });
