@@ -12,7 +12,7 @@ var Preset = [
     "Clavi (NOT IMPLEMENTED)",
 
     // (9..16) Chromatic Percussion
-    "Celesta (NOT IMPLEMENTED)",
+    "Celesta",
     "Glockenspiel (NOT IMPLEMENTED)",
     "Music Box (NOT IMPLEMENTED)",
     "Vibraphone (NOT IMPLEMENTED)",
