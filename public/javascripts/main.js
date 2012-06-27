@@ -1,7 +1,7 @@
 (function() {
   "use strict";
   jQuery(function() {
-    var eval_synth, id, interval, prev_code, selector;
+    var eval_synth, hex2dec, id, interval, prev_code, selector, webMidiLinkRecv;
     window.synth = null;
     prev_code = "";
     eval_synth = function(code) {
@@ -52,13 +52,28 @@
         return window.synth.noteon(doremi[i], 64);
       }
     });
-    return window.testplay = function(b) {
+    window.testplay = function(b) {
       if (b) {
         return interval.on();
       } else {
         return interval.off();
       }
     };
+    hex2dec = function(s) {
+      return parseInt(s, 16);
+    };
+    webMidiLinkRecv = function(e) {
+      var msg, _ref, _ref2;
+      msg = e.data.split(",");
+      if (msg[0] !== "midi") return;
+      switch (hex2dec(msg[1]) & 0xf0) {
+        case 0x80:
+          return (_ref = window.synth) != null ? _ref.noteon(hex2dec(msg[2])) : void 0;
+        case 0x90:
+          return (_ref2 = window.synth) != null ? _ref2.noteon(hex2dec(msg[2]), hex2dec(msg[3])) : void 0;
+      }
+    };
+    return window.addEventListener("message", webMidiLinkRecv, false);
   });
 
 }).call(this);

@@ -39,6 +39,7 @@ jQuery ->
         if e.ctrlKey and e.keyCode is 32
             eval_synth $(this).val().trim()
 
+    # Test Play
     interval = T("interval", 600, ->
         doremi = [72, 74, 76, 77, 79, 81, 83, 84]
         i = interval.count % doremi.length
@@ -48,3 +49,18 @@ jQuery ->
 
     window.testplay = (b)->
         if b then interval.on() else interval.off()
+
+    # WebMidiLink
+    hex2dec = (s)-> parseInt s, 16
+    webMidiLinkRecv = (e)->
+
+        msg = e.data.split ","
+        return unless msg[0] is "midi"
+
+        switch hex2dec(msg[1]) & 0xf0
+            when 0x80 # note-off
+                window.synth?.noteon hex2dec(msg[2])
+            when 0x90 # note-on
+                window.synth?.noteon hex2dec(msg[2]), hex2dec(msg[3])
+
+    window.addEventListener "message", webMidiLinkRecv, false
