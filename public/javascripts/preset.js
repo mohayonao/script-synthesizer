@@ -6,7 +6,7 @@ var Preset = [
     "Bright Piano (NOT IMPLEMENTED)",
     "Electric Grand Piano (NOT IMPLEMENTED)",
     "Honky-tonk Piano (NOT IMPLEMENTED)",
-    "Electric Piano (NOT IMPLEMENTED)",
+    "Electric Piano",
     "Electric Piano 2 (NOT IMPLEMENTED)",
     "Harpsichode (NOT IMPLEMENTED)",
     "Clavi (NOT IMPLEMENTED)",
