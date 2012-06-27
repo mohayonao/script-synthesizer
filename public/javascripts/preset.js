@@ -2,7 +2,7 @@ var Preset = [
     "none",
     
     // (1..8) Piano
-    "Acoustic Piano (NOT IMPLEMENTED)",
+    "Acoustic Piano",
     "Bright Piano (NOT IMPLEMENTED)",
     "Electric Grand Piano (NOT IMPLEMENTED)",
     "Honky-tonk Piano (NOT IMPLEMENTED)",
