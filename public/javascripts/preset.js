@@ -62,7 +62,7 @@ var Preset = [
     "Timpani (NOT IMPLEMENTED)",
 
     // (49..56) Ensemble
-    "String Ensemble 1 (NOT IMPLEMENTED)",
+    "String Ensemble 1",
     "String Ensemble 2 (NOT IMPLEMENTED)",
     "Synth String 1 (NOT IMPLEMENTED)",
     "Synth String 2 (NOT IMPLEMENTED)",
