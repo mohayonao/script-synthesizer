@@ -1,18 +1,20 @@
 "use strict"
 jQuery ->
-    window.synth = null
+    window.synthdef = null
 
     prev_code = ""
     eval_synth = (code)->
+        code = code.substr(code.indexOf "function")
         if prev_code != code
-            _synth = null
+            _synthdef = null
             try
-                _synth = eval("(function() {#{code}}());")
+                _synthdef = eval "(function () { return #{code}; }());"
+            catch e
+                _synthdef = null
             finally
-                _synth = null unless timbre.fn.isTimbreObject _synth
-            if _synth
-                timbre.dacs.removeAll()
-                window.synth = _synth.play()
+                _synthdef = null unless _synthdef instanceof Function
+            if _synthdef
+                window.synthdef = _synthdef
                 $("#code").css "color", "black"
             else
                 $("#code").css "color", "red"
@@ -53,12 +55,28 @@ jQuery ->
     window.testplay = (b)->
         if b then interval.on() else interval.off()
 
+    # synth
+    synth = T("+").play()
+    synth.noteOn = {}
+
     # WebMidiLink
     receiver = new webmidilink.Receiver 0
 
     receiver.onNoteOn = (notenumber, velocity)->
-        window.synth?.noteon? notenumber, velocity
+        s = synth.noteOn[notenumber];
+        unless s
+            freq = timbre.utils.mtof notenumber
+            s = window.synthdef? freq
+            return unless timbre.fn.isTimbreObject s
+            synth.noteOn[notenumber] = s.appendTo(synth)
+            s.notenumber = notenumber
+            s.onended = ->
+                delete synth.noteOn[s.removeFrom(synth).notenumber]
+            if synth.args.length > (synth.poly or 4)
+                delete synth.noteOn[synth.args.shift().notenumber]
+        s.set(mul:velocity / 128).keyon()
     receiver.onNoteOff = (notenumber, velocity)->
-        window.synth?.noteoff? notenumber, velocity
+        synth.noteOn[notenumber]?.keyoff()
     receiver.onAllSoundOff = ()->
-        window.synth?.allSoundOff?()
+        while synth.args.length > 0
+            delete synth.noteOn[synth.args.shift().notenumber]

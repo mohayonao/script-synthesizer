@@ -3,23 +3,25 @@
   "use strict";
 
   jQuery(function() {
-    var eval_synth, id, interval, prev_code, receiver, selector;
-    window.synth = null;
+    var eval_synth, id, interval, prev_code, receiver, selector, synth;
+    window.synthdef = null;
     prev_code = "";
     eval_synth = function(code) {
-      var _synth;
+      var _synthdef;
+      code = code.substr(code.indexOf("function"));
       if (prev_code !== code) {
-        _synth = null;
+        _synthdef = null;
         try {
-          _synth = eval("(function() {" + code + "}());");
+          _synthdef = eval("(function () { return " + code + "; }());");
+        } catch (e) {
+          _synthdef = null;
         } finally {
-          if (!timbre.fn.isTimbreObject(_synth)) {
-            _synth = null;
+          if (!(_synthdef instanceof Function)) {
+            _synthdef = null;
           }
         }
-        if (_synth) {
-          timbre.dacs.removeAll();
-          window.synth = _synth.play();
+        if (_synthdef) {
+          window.synthdef = _synthdef;
           return $("#code").css("color", "black");
         } else {
           return $("#code").css("color", "red");
@@ -75,18 +77,42 @@
         return interval.off();
       }
     };
+    synth = T("+").play();
+    synth.noteOn = {};
     receiver = new webmidilink.Receiver(0);
     receiver.onNoteOn = function(notenumber, velocity) {
-      var _ref;
-      return (_ref = window.synth) != null ? typeof _ref.noteon === "function" ? _ref.noteon(notenumber, velocity) : void 0 : void 0;
+      var freq, s;
+      s = synth.noteOn[notenumber];
+      if (!s) {
+        freq = timbre.utils.mtof(notenumber);
+        s = typeof window.synthdef === "function" ? window.synthdef(freq) : void 0;
+        if (!timbre.fn.isTimbreObject(s)) {
+          return;
+        }
+        synth.noteOn[notenumber] = s.appendTo(synth);
+        s.notenumber = notenumber;
+        s.onended = function() {
+          return delete synth.noteOn[s.removeFrom(synth).notenumber];
+        };
+        if (synth.args.length > (synth.poly || 4)) {
+          delete synth.noteOn[synth.args.shift().notenumber];
+        }
+      }
+      return s.set({
+        mul: velocity / 128
+      }).keyon();
     };
     receiver.onNoteOff = function(notenumber, velocity) {
       var _ref;
-      return (_ref = window.synth) != null ? typeof _ref.noteoff === "function" ? _ref.noteoff(notenumber, velocity) : void 0 : void 0;
+      return (_ref = synth.noteOn[notenumber]) != null ? _ref.keyoff() : void 0;
     };
     return receiver.onAllSoundOff = function() {
-      var _ref;
-      return (_ref = window.synth) != null ? typeof _ref.allSoundOff === "function" ? _ref.allSoundOff() : void 0 : void 0;
+      var _results;
+      _results = [];
+      while (synth.args.length > 0) {
+        _results.push(delete synth.noteOn[synth.args.shift().notenumber]);
+      }
+      return _results;
     };
   });
 
