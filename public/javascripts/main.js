@@ -1,7 +1,7 @@
 (function() {
   "use strict";
   jQuery(function() {
-    var eval_synth, interval, prev_code, selector;
+    var eval_synth, id, interval, prev_code, selector;
     window.synth = null;
     prev_code = "";
     eval_synth = function(code) {
@@ -35,6 +35,8 @@
         return eval_synth(res);
       });
     });
+    id = location.search.substr(1);
+    if (/^\d{1,3}$/.test(id)) selector.val(id | 0);
     selector.change();
     $("#code").on("keydown", function(e) {
       if (e.ctrlKey && e.keyCode === 32) return e.preventDefault();

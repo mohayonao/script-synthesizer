@@ -27,6 +27,8 @@ jQuery ->
         jQuery.get "/presets/#{n}", (res)->
             $("#code").val res
             eval_synth res
+    id = location.search.substr 1
+    if /^\d{1,3}$/.test id then selector.val id|0
     selector.change()
 
     $("#code").on "keydown", (e)->
