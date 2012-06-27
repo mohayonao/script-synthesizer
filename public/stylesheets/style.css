@@ -1,6 +1,6 @@
 h1 {
     font-size: 36px;
-    margin: 30px 0px;
+    margin: 10px 0px;
 }
 a {
     color: #3344ff;
@@ -43,7 +43,7 @@ textarea {
     font-family: 'Courier New', monospace;
 }
 #synth-selector {
-    width: 250px;
+    width: 350px;
 }
 #code {
     margin-left: 14px;
@@ -55,4 +55,20 @@ textarea {
 .tips {
     color: green;
     font-weight: bold;
+}
+.control {
+    font-family: 'Courier New', monospace;
+    margin-top: 40px;
+}
+.control label {
+    display: inline-block;
+    width: 100px;
+}
+.control label:after {
+    content:":"
+}
+.control #volume {
+    width: 350px;
+    display: inline-block;
+    margin-top: 15px;
 }

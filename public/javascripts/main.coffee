@@ -39,6 +39,9 @@ jQuery ->
         if e.ctrlKey and e.keyCode is 32
             eval_synth $(this).val().trim()
 
+    $("#volume").slider value:80, slide: ->
+        timbre.amp = $(this).slider("value") / 100
+
     # Test Play
     interval = T("interval", 600, ->
         doremi = [72, 74, 76, 77, 79, 81, 83, 84]

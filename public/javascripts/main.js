@@ -44,6 +44,12 @@
     $("#code").on("keyup", function(e) {
       if (e.ctrlKey && e.keyCode === 32) return eval_synth($(this).val().trim());
     });
+    $("#volume").slider({
+      value: 80,
+      slide: function() {
+        return timbre.amp = $(this).slider("value") / 100;
+      }
+    });
     interval = T("interval", 600, function() {
       var doremi, i, _ref;
       doremi = [72, 74, 76, 77, 79, 81, 83, 84];

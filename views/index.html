@@ -3,12 +3,14 @@
   <meta charset="utf-8"/>
   <title>timbre.js - ScriptSynthesizer</title>
   <link type="text/css" media="screen" rel="stylesheet" href="stylesheets/style.css" />
+  <link type="text/css" media="screen" rel="stylesheet" href="stylesheets/jquery-ui-1.8.21.custom.css">
   </head>
 <body>
   <section id="body">
     <h1><a href="http://mohayonao.github.com/timbre">timbre.js</a> - ScriptSynthesizer</h1>
-    <div>
-      Preset: <select id="synth-selector"></select>
+    <div class="control">
+      <label>Preset</label><select id="synth-selector"></select><br/>
+      <label>Volume</label><div id="volume"></div>
     </div>
     <div class="function">var synth = (function() {<br/>
       <textarea id="code" cols=80 rows=20></textarea><br/>
@@ -19,6 +21,7 @@
 </body>
 <script type="text/javascript" src="/javascripts/timbre.min.js"></script>
 <script type="text/javascript" src="/javascripts/jquery.min.js"></script>
+<script type="text/javascript" src="/javascripts/jquery-ui-1.8.21.custom.min.js"></script>
 <script type="text/javascript" src="/javascripts/preset.js"></script>
 <script type="text/javascript" src="/javascripts/main.js"></script>
 </html>
