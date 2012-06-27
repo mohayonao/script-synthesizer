@@ -54,6 +54,7 @@ textarea {
 }
 .tips {
     color: green;
+    padding: 10px;
     font-weight: bold;
 }
 .control {
