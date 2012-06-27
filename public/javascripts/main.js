@@ -62,6 +62,18 @@
         return timbre.amp = $(this).slider("value") / 100;
       }
     });
+    $("#mute").on("click", function() {
+      if (timbre.amp) {
+        timbre.amp = 0;
+        return $(this).css("color", "blue");
+      } else {
+        timbre.amp = 0.8;
+        return $(this).css("color", "black");
+      }
+    });
+    $("#reload").on("click", function() {
+      return selector.change();
+    });
     interval = T("interval", 600, function() {
       var doremi, i, _ref;
       doremi = [72, 74, 76, 77, 79, 81, 83, 84];

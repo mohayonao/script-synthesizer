@@ -44,6 +44,17 @@ jQuery ->
     $("#volume").slider value:80, slide: ->
         timbre.amp = $(this).slider("value") / 100
 
+    $("#mute").on "click", ->
+        if timbre.amp
+            timbre.amp = 0
+            $(this).css "color", "blue"
+        else
+            timbre.amp = 0.8
+            $(this).css "color", "black"
+
+    $("#reload").on "click", ->
+        selector.change()
+
     # Test Play
     interval = T("interval", 600, ->
         doremi = [72, 74, 76, 77, 79, 81, 83, 84]
