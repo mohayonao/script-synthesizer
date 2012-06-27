@@ -3,15 +3,20 @@
  * author: @mohayonao
  */
 function synthdef(freq) {
-    var op2 = T("oscx", T("phasor", freq * 14, 0.25));
-    var op1 = T("*", T("oscx", T("+", T("phasor", freq), op2), 0.5),
-                     T("adsr", "24db", 0, 2500, 0.2, 1000));
-    var synth = op1;
+    var op1 = T("oscx", T("phasor", 200), 0.01).set({fb:0.1});
+    var op2 = T("*", T("oscx", T("+", T("phasor", freq), op1), 0.2),
+                     T("adsr", "32db", 0, 450, 0.4, 500));
+    var op3 = T("oscx", T("phasor", freq * 14), 0.1);
+    var op4 = T("*", T("oscx", T("+", T("phasor", freq * 2), op3), 0.5),
+                     T("adsr", "24db", 0, 250, 0.1, 500));
+    var synth = T("+", op2, op4);
     synth.keyon = function() {
-        op1.args[1].bang();
+        op2.args[1].bang();
+        op4.args[1].bang();
     };
     synth.keyoff = function() {
-        op1.args[1].keyoff();
+        op2.args[1].keyoff();
+        op4.args[1].keyoff();
     };
     return synth;
 }
