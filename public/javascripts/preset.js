@@ -22,7 +22,7 @@ var Preset = [
     "Dulcimer (NOT IMPLEMENTED)",
 
     // (17..24) Organ
-    "Drawbar Organ (NOT IMPLEMENTED)",
+    "Drawbar Organ",
     "Percussive Organ (NOT IMPLEMENTED)",
     "Rock Organ (NOT IMPLEMENTED)",
     "Church Organ (NOT IMPLEMENTED)",
