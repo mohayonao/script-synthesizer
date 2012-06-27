@@ -102,8 +102,8 @@ var Preset = [
     "Ocarina (NOT IMPLEMENTED)",
 
     // (81..88) Synth Lead
-    "Lead 1 (square) (NOT IMPLEMENTED)",
-    "Lead 2 (sawtooth) (NOT IMPLEMENTED)",
+    "Lead 1 (square)",
+    "Lead 2 (sawtooth)",
     "Lead 3 (callipoe) (NOT IMPLEMENTED)",
     "Lead 4 (chiff) (NOT IMPLEMENTED)",
     "Lead 5 (charang) (NOT IMPLEMENTED)",
