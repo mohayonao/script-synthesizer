@@ -1,5 +1,5 @@
 /**
- * 013: Marimba
+ * 005: Electric Piano
  * author: @mohayonao
  */
 var synth = T("+");
