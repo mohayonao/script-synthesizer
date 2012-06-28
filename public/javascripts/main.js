@@ -46,7 +46,7 @@
     if (/^\d{1,3}$/.test(id)) {
       selector.val(id | 0);
     }
-    selector.change();
+    selector.val(1).change();
     isEditing = false;
     $("#code").on("focus", function(e) {
       return isEditing = true;
