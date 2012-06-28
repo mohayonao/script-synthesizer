@@ -4,13 +4,13 @@
  */
 function synthdef(freq) {
     var op1 = T("*", T("oscx", T("phasor", freq * 14), 0.1).set({fb:0.15}),
-                     T("adsr", "24db", 10, 3500));
+                     T("adsr", "24db", 10, 3500, 0.2, 1500));
     var op2 = T("*", T("oscx", T("+", T("phasor", freq), op1, 0.1)),
-                     T("adsr", "24db", 0, 10000, 0.6, 500));
+                     T("adsr", "24db", 0, 10000, 0.6, 1500));
     var op3 = T("*", T("oscx", T("phasor", freq + 2), 0.25),
-                     T("adsr", "24db", 10, 3500));
+                     T("adsr", "24db", 10, 3500, 0.2, 1500));
     var op4 = T("*", T("oscx", T("+", T("phasor", freq), op3)),
-                     T("adsr", "24db", 0, 10000, 0.5, 500));
+                     T("adsr", "24db", 0, 10000, 0.5, 1500));
     var synth = T("+", op2, op4);
     synth.keyon = function() {
         op1.args[1].bang();
