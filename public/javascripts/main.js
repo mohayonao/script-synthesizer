@@ -119,7 +119,7 @@
         }
       }
       return s.set({
-        mul: velocity / 128
+        mul: (velocity / 128) * 0.5
       }).keyon();
     };
     receiver.onNoteOff = function(notenumber, velocity) {

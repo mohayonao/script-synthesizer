@@ -90,7 +90,7 @@ jQuery ->
                 delete synth.noteOn[s.removeFrom(synth).notenumber]
             if synth.args.length > (synth.poly or 4)
                 delete synth.noteOn[synth.args.shift().notenumber]
-        s.set(mul:velocity / 128).keyon()
+        s.set(mul:(velocity / 128) * 0.5).keyon()
     receiver.onNoteOff = (notenumber, velocity)->
         synth.noteOn[notenumber]?.keyoff()
     receiver.onAllSoundOff = ()->
