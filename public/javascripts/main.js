@@ -3,7 +3,7 @@
   "use strict";
 
   jQuery(function() {
-    var eval_synth, id, interval, prev_code, receiver, selector, synth;
+    var eval_synth, id, interval, isEditing, isKeyDown, key2notenumber, prev_code, receiver, selector, synth;
     window.synthdef = null;
     prev_code = "";
     eval_synth = function(code) {
@@ -21,6 +21,7 @@
           }
         }
         if (_synthdef) {
+          receiver.onAllSoundOff();
           window.synthdef = _synthdef;
           return $("#code").css("color", "black");
         } else {
@@ -46,6 +47,13 @@
       selector.val(id | 0);
     }
     selector.change();
+    isEditing = false;
+    $("#code").on("focus", function(e) {
+      return isEditing = true;
+    });
+    $("#code").on("blur", function(e) {
+      return isEditing = false;
+    });
     $("#code").on("keydown", function(e) {
       if (e.ctrlKey && e.keyCode === 32) {
         return e.preventDefault();
@@ -118,7 +126,7 @@
       var _ref;
       return (_ref = synth.noteOn[notenumber]) != null ? _ref.keyoff() : void 0;
     };
-    return receiver.onAllSoundOff = function() {
+    receiver.onAllSoundOff = function() {
       var _results;
       _results = [];
       while (synth.args.length > 0) {
@@ -126,6 +134,67 @@
       }
       return _results;
     };
+    key2notenumber = {
+      90: 48,
+      83: 49,
+      88: 50,
+      68: 51,
+      67: 52,
+      86: 53,
+      71: 54,
+      66: 55,
+      72: 56,
+      78: 57,
+      74: 58,
+      77: 59,
+      188: 60,
+      76: 61,
+      190: 62,
+      186: 63,
+      81: 60,
+      50: 61,
+      87: 62,
+      51: 63,
+      69: 64,
+      82: 65,
+      53: 66,
+      84: 67,
+      54: 68,
+      89: 69,
+      55: 70,
+      85: 71,
+      73: 72,
+      57: 73,
+      79: 74,
+      48: 75,
+      80: 76
+    };
+    isKeyDown = {};
+    window.addEventListener("keydown", function(e) {
+      var notenumber;
+      if (isEditing) {
+        return;
+      }
+      if (isKeyDown[e.keyCode]) {
+        return;
+      }
+      notenumber = key2notenumber[e.keyCode];
+      if (notenumber) {
+        receiver.onNoteOn(notenumber, 64);
+      }
+      return isKeyDown[e.keyCode] = true;
+    });
+    return window.addEventListener("keyup", function(e) {
+      var notenumber;
+      if (isEditing) {
+        return;
+      }
+      notenumber = key2notenumber[e.keyCode];
+      if (notenumber) {
+        receiver.onNoteOff(notenumber, 0);
+      }
+      return isKeyDown[e.keyCode] = false;
+    });
   });
 
 }).call(this);
