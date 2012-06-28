@@ -3,7 +3,7 @@
   "use strict";
 
   jQuery(function() {
-    var eval_synth, id, interval, isEditing, isKeyDown, key2notenumber, prev_code, receiver, selector, synth;
+    var eval_synth, interval, isEditing, isKeyDown, key2notenumber, prev_code, q, receiver, search, selector, synth;
     window.synthdef = null;
     prev_code = "";
     eval_synth = function(code) {
@@ -42,11 +42,21 @@
         return eval_synth(res);
       });
     });
-    id = location.search.substr(1);
-    if (/^\d{1,3}$/.test(id)) {
-      selector.val(id | 0);
+    selector.val(1);
+    q = {};
+    search = location.search.substr(1);
+    search.split("&").forEach(function(x) {
+      x = x.split("=");
+      if (x.length === 0) {
+        return q[x[0]] = true;
+      } else {
+        return q[x[0]] = x[1];
+      }
+    });
+    if (/^\d{1,3}$/.test(q.p)) {
+      selector.val(q.p | 0);
     }
-    selector.val(1).change();
+    selector.change();
     isEditing = false;
     $("#code").on("focus", function(e) {
       return isEditing = true;
@@ -65,7 +75,7 @@
       }
     });
     $("#volume").slider({
-      value: 80,
+      value: q.vol || 80,
       slide: function() {
         return timbre.amp = $(this).slider("value") / 100;
       }

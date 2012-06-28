@@ -30,9 +30,16 @@ jQuery ->
         jQuery.get "/presets/#{n}", (res)->
             $("#code").val res
             eval_synth res
-    id = location.search.substr 1
-    if /^\d{1,3}$/.test id then selector.val id|0
-    selector.val(1).change()
+    selector.val 1
+    q = {}
+    search = location.search.substr 1
+
+    search.split("&").forEach (x)->
+        x = x.split "="
+        if x.length is 0 then q[x[0]] = true
+        else q[x[0]] = x[1]
+    if /^\d{1,3}$/.test q.p then selector.val q.p|0
+    selector.change()
 
     isEditing = false
     $("#code").on "focus", (e)-> isEditing = true
@@ -46,7 +53,7 @@ jQuery ->
         if e.ctrlKey and e.keyCode is 32
             eval_synth $(this).val().trim()
 
-    $("#volume").slider value:80, slide: ->
+    $("#volume").slider value:q.vol or 80, slide: ->
         timbre.amp = $(this).slider("value") / 100
 
     $("#mute").on "click", ->
