@@ -2,7 +2,7 @@
  * 005: Electric Piano
  * author: @mohayonao
  */
-function synthdef(freq) {
+function synthdef(freq, notenumber, velocity) {
     var op1 = T("*", T("oscx", T("phasor", freq * 14), 0.1).set({fb:0.15}),
                      T("adsr", "24db", 10, 3500, 0.2, 1500));
     var op2 = T("*", T("oscx", T("+", T("phasor", freq), op1, 0.1)),
