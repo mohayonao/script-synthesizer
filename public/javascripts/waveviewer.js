@@ -35,13 +35,9 @@ var WaveViewer = (function() {
     
     $this.start = function() {
         var self = this;
-        var target, interval, range;
         var context, width, height, half_h;
         var prev, stop_delay = 10;
         
-        target   = this.target;
-        interval = this.interval;
-        range    = this.range;
         context  = this.context;
         width    = this.width;
         height   = this.height;
@@ -49,10 +45,15 @@ var WaveViewer = (function() {
         prev = 0;
         
         var animate = function() {
+            var target, interval, range;
             var now, wave, min, max, y, dx, i, imax;
+            interval = self.interval;            
             now = +new Date();
             if (now - prev >= interval) {
                 prev = now;
+                
+                target   = self.target;
+                range    = self.range;
                 
                 context.fillRect(0, 0, width, height);
                 
