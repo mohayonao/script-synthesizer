@@ -1,5 +1,6 @@
 "use strict"
 jQuery ->
+    timbre.utils.exports "mtof"
 
     # Query String
     Q = do ->
@@ -13,7 +14,7 @@ jQuery ->
 
 
     # Synth
-    Synth = T("+").play()
+    Synth = T("+").set({mul:0.5}).play()
     Synth.noteOn = {}
     Synth.def  = null
     Synth.eval = (code, verbose)->
@@ -192,7 +193,7 @@ jQuery ->
         if s is undefined
 
           freq = timbre.utils.mtof notenumber
-          s = Synth.def? freq
+          s = Synth.def? freq, notenumber, velocity
           return unless timbre.fn.isTimbreObject s
           Synth.noteOn[notenumber] = s.appendTo(Synth)
           s.notenumber = notenumber
@@ -200,7 +201,8 @@ jQuery ->
             delete Synth.noteOn[s.removeFrom(Synth).notenumber]
           if Synth.args.length > 4
             delete Synth.noteOn[Synth.args.shift().notenumber]
-        s.set(mul:(velocity / 128) * 0.5).keyon()
+        mul = 1 - timbre.utils.db2num(velocity / 6)
+        s.set(mul:mul).keyon()
     MidiReceiver.onNoteOff = (notenumber, velocity)->
         Synth.noteOn[notenumber]?.keyoff()
     MidiReceiver.onAllSoundOff = ->

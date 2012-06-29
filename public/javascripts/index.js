@@ -4,6 +4,7 @@
 
   jQuery(function() {
     var KeyMapping, MidiReceiver, PresetSelector, Q, Synth, SynthDefEditor, Viewer, showMessage;
+    timbre.utils.exports("mtof");
     Q = (function() {
       var search;
       Q = {};
@@ -18,7 +19,9 @@
       });
       return Q;
     })();
-    Synth = T("+").play();
+    Synth = T("+").set({
+      mul: 0.5
+    }).play();
     Synth.noteOn = {};
     Synth.def = null;
     Synth["eval"] = function(code, verbose) {
@@ -238,11 +241,11 @@
     });
     MidiReceiver = new webmidilink.Receiver(0);
     MidiReceiver.onNoteOn = function(notenumber, velocity) {
-      var freq, s;
+      var freq, mul, s;
       s = Synth.noteOn[notenumber];
       if (s === void 0) {
         freq = timbre.utils.mtof(notenumber);
-        s = typeof Synth.def === "function" ? Synth.def(freq) : void 0;
+        s = typeof Synth.def === "function" ? Synth.def(freq, notenumber, velocity) : void 0;
         if (!timbre.fn.isTimbreObject(s)) {
           return;
         }
@@ -255,8 +258,9 @@
           delete Synth.noteOn[Synth.args.shift().notenumber];
         }
       }
+      mul = 1 - timbre.utils.db2num(velocity / 6);
       return s.set({
-        mul: (velocity / 128) * 0.5
+        mul: mul
       }).keyon();
     };
     MidiReceiver.onNoteOff = function(notenumber, velocity) {
