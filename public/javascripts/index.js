@@ -131,7 +131,7 @@
       });
     });
     PresetSelector.val(1);
-    if (/^\d{1,3]$/.test(Q.p)) {
+    if (/^\d{1,3}$/.test(Q.p)) {
       PresetSelector.val(Q.p | 0);
     }
     PresetSelector.change();

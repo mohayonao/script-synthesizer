@@ -103,7 +103,7 @@ jQuery ->
             SynthDefEditor.setValue res
             Synth.eval res
     PresetSelector.val 1
-    if /^\d{1,3]$/.test Q.p then PresetSelector.val Q.p|0
+    if /^\d{1,3}$/.test Q.p then PresetSelector.val Q.p|0
     PresetSelector.change()
 
     $("#viewer-wave").on "click", -> Viewer.select "wave"
