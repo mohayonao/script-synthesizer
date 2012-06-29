@@ -1,4 +1,7 @@
-function synthdef (freq) {
+/**
+ * 000: none
+ */
+function synthdef(freq, notenumber, velocity) {
     var synth = T("*", T("sin", freq, 0.8),
                        T("adsr", "24db", 10, 100, 0.7, 10));
     synth.keyon = function() {
