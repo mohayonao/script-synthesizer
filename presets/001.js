@@ -2,7 +2,7 @@
  * 001: Acoustic Piano
  * author: @mohayonao
  */
-function synthdef(freq) {
+function synthdef(freq, notenumber, velocity) {
     var synth = T("*", T("+", T("sin", freq),
                               T("sin", freq * 2, 0.5),
                               T("sin", freq * 4, 0.25),
