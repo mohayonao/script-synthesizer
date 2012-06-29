@@ -10,6 +10,8 @@
   <link rel="stylesheet" href="/stylesheets/index.css" />
 </head>
 <body>
+  
+  <!-- Navigation Bar ======================================== -->
   <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
       <div class="pull-right">
@@ -21,12 +23,15 @@
           <select id="preset" class="large">
           </select>
         </form>
-      </div><!-- /container-fluid -->
-    </div><!-- /navbar-inner -->
-  </div><!-- /navbar -->
+      </div>
+    </div>
+  </div>
+  <!-- ======================================== Navigation Bar -->
   
-  
+
+  <!-- Main ======================================== -->
   <div class="container-fluid">
+    <!-- Tab ======================================== -->
     <div class="tabbable">
       <ul class="nav nav-tabs" id="tab">
         <li class="active"><a href="#tabSynthDef" data-toggle="tab">SynthDef</a></li>
@@ -34,11 +39,11 @@
         <li><a href="#tabKeyMap" data-toggle="tab">KeyMap</a></li>
       </ul>
       
+      <!-- TabContent ======================================== -->
       <div class="well" id="content">
         <div class="tab-content">
           
-          <!-- Tab: SynthDef
-               ======================================== -->
+          <!-- Tab: SynthDef ======================================== -->
           <div class="tab-pane active" id="tabSynthDef">
             <textarea id="editor">// Your SynthDef code goes here.</textarea>
             
@@ -53,10 +58,10 @@
               </button>
             </div>
           </div>
+          <!-- ======================================== Tab: SynthDef -->
           
           
-          <!-- Tab: Viewer
-               ======================================== -->
+          <!-- Tab: Viewer ======================================== -->
           <div class="tab-pane" id="tabViewer">
             <div class="row-fluid">
               <div class="span2">
@@ -76,70 +81,77 @@
               <div class="span10"><canvas id="viewer"></canvas></div>
             </div><!-- /row-fluid -->
           </div>
+          <!-- ======================================== Tab: Viewer -->
           
-          <!-- Tab: KeyMap
-               ======================================== -->
+          
+          <!-- Tab: KeyMap ======================================== -->
           <div class="tab-pane" id="tabKeyMap">
-              <div class="row-fluid keymap blackkey">
-                <div class="disabled"><p><strong>1</strong></p>&nbsp;</div>
-                <div><p><strong>2</strong></p>C#3</div>
-                <div><p><strong>3</strong></p>D#3</div>
-                <div class="disabled"><p><strong>4</strong></p>&nbsp;</div>
-                <div><p><strong>5</strong></p>F#3</div>
-                <div><p><strong>6</strong></p>G#3</div>
-                <div><p><strong>7</strong></p>A#3</div>
-                <div class="disabled"><p><strong>8</strong></p>&nbsp;</div>
-                <div><p><strong>9</strong></p>C#4</div>
-                <div><p><strong>0</strong></p>D#4</div>
-                <div class="padding" style="width:30px">&nbsp;</div>
-              </div>
-              <div class="row-fluid keymap whitekey">
-                <div class="padding" style="width:8px">&nbsp;</div>
-                <div><p><strong>Q</strong></p>C3</div>
-                <div><p><strong>W</strong></p>D3</div>
-                <div><p><strong>E</strong></p>E3</div>
-                <div><p><strong>R</strong></p>F3</div>
-                <div><p><strong>T</strong></p>G3</div>
-                <div><p><strong>Y</strong></p>A3</div>
-                <div><p><strong>U</strong></p>G3</div>
-                <div><p><strong>I</strong></p>C4</div>
-                <div><p><strong>O</strong></p>D4</div>
-                <div><p><strong>P</strong></p>E4</div>
-                <div class="padding" style="width:8px">&nbsp;</div>
-              </div>
-              <div class="row-fluid keymap blackkey">
-                <div class="padding" style="width:16px">&nbsp;</div>
-                <div class="disabled"><p><strong>A</strong></p>&nbsp;</div>
-                <div><p><strong>S</strong></p>C#2</div>
-                <div><p><strong>D</strong></p>D#2</div>
-                <div class="disabled"><p><strong>F</strong></p>&nbsp;</div>
-                <div><p><strong>G</strong></p>F#2</div>
-                <div><p><strong>H</strong></p>G#2</div>
-                <div><p><strong>J</strong></p>A#2</div>
-                <div class="disabled"><p><strong>K</strong></p>&nbsp;</div>
-                <div><p><strong>L</strong></p>C#3</div>
-                <div><p><strong>:</strong></p>D#3</div>
-                <div class="padding" style="width:2px">&nbsp;</div>
-              </div>
-              <div class="row-fluid keymap whitekey">
-                <div class="padding" style="width:32px">&nbsp;</div>
-                <div><p><strong>Z</strong></p>C2</div>
-                <div><p><strong>X</strong></p>D2</div>
-                <div><p><strong>C</strong></p>E2</div>
-                <div><p><strong>V</strong></p>F2</div>
-                <div><p><strong>B</strong></p>G2</div>
-                <div><p><strong>N</strong></p>A2</div>
-                <div><p><strong>M</strong></p>B2</div>
-                <div><p><strong>,</strong></p>C3</div>
-                <div><p><strong>.</strong></p>D3</div>
-                <div><p><strong>/</strong></p>E3</div>
-              </div>
+            <div class="row-fluid keymap blackkey">
+              <div class="disabled"><p><strong>1</strong></p>&nbsp;</div>
+              <div><p><strong>2</strong></p>C#3</div>
+              <div><p><strong>3</strong></p>D#3</div>
+              <div class="disabled"><p><strong>4</strong></p>&nbsp;</div>
+              <div><p><strong>5</strong></p>F#3</div>
+              <div><p><strong>6</strong></p>G#3</div>
+              <div><p><strong>7</strong></p>A#3</div>
+              <div class="disabled"><p><strong>8</strong></p>&nbsp;</div>
+              <div><p><strong>9</strong></p>C#4</div>
+              <div><p><strong>0</strong></p>D#4</div>
+              <div class="padding" style="width:30px">&nbsp;</div>
+            </div>
+            <div class="row-fluid keymap whitekey">
+              <div class="padding" style="width:8px">&nbsp;</div>
+              <div><p><strong>Q</strong></p>C3</div>
+              <div><p><strong>W</strong></p>D3</div>
+              <div><p><strong>E</strong></p>E3</div>
+              <div><p><strong>R</strong></p>F3</div>
+              <div><p><strong>T</strong></p>G3</div>
+              <div><p><strong>Y</strong></p>A3</div>
+              <div><p><strong>U</strong></p>G3</div>
+              <div><p><strong>I</strong></p>C4</div>
+              <div><p><strong>O</strong></p>D4</div>
+              <div><p><strong>P</strong></p>E4</div>
+              <div class="padding" style="width:8px">&nbsp;</div>
+            </div>
+            <div class="row-fluid keymap blackkey">
+              <div class="padding" style="width:16px">&nbsp;</div>
+              <div class="disabled"><p><strong>A</strong></p>&nbsp;</div>
+              <div><p><strong>S</strong></p>C#2</div>
+              <div><p><strong>D</strong></p>D#2</div>
+              <div class="disabled"><p><strong>F</strong></p>&nbsp;</div>
+              <div><p><strong>G</strong></p>F#2</div>
+              <div><p><strong>H</strong></p>G#2</div>
+              <div><p><strong>J</strong></p>A#2</div>
+              <div class="disabled"><p><strong>K</strong></p>&nbsp;</div>
+              <div><p><strong>L</strong></p>C#3</div>
+              <div><p><strong>:</strong></p>D#3</div>
+              <div class="padding" style="width:2px">&nbsp;</div>
+            </div>
+            <div class="row-fluid keymap whitekey">
+              <div class="padding" style="width:32px">&nbsp;</div>
+              <div><p><strong>Z</strong></p>C2</div>
+              <div><p><strong>X</strong></p>D2</div>
+              <div><p><strong>C</strong></p>E2</div>
+              <div><p><strong>V</strong></p>F2</div>
+              <div><p><strong>B</strong></p>G2</div>
+              <div><p><strong>N</strong></p>A2</div>
+              <div><p><strong>M</strong></p>B2</div>
+              <div><p><strong>,</strong></p>C3</div>
+              <div><p><strong>.</strong></p>D3</div>
+              <div><p><strong>/</strong></p>E3</div>
+            </div>
           </div>
-        </div><!-- /tab-contant -->
-      </div><!-- /well -->
-    </div><!-- /tabbable -->
+          <!-- ======================================== Tab: KeyMap -->
+          
+        </div>
+      </div>
+      <!-- ======================================== TabContent -->
+      
+    </div>
+    <!-- ======================================== Tab -->
     
     
+    <!-- Footer ======================================== -->
     <div class="footer">
       <p><strong>Script Synthesizer</strong> using by <a href="https://github.com/mohayonao/timbre" target="_blank">timbre.js</a> and <a href="http://www.g200kg.com/en/docs/webmidilink/sprc.html" target="_blank">WebMidiLink</a>.</p>
       <p>Fork me on
@@ -147,7 +159,11 @@
         Maintained by <a href="https://twitter.com/mohayonao" target="_blank">@mohayonao</a>
       </p>
     </div>
+    <!-- ======================================== Footer -->
+    
   </div>
+  <!-- ======================================== Main -->
+  
   <script type="text/javascript" src="/javascripts/lib/jquery.min.js"></script>
   <script type="text/javascript" src="/javascripts/lib/bootstrap.min.js"></script>
   <script type="text/javascript" src="/javascripts/lib/codemirror.js"></script>
