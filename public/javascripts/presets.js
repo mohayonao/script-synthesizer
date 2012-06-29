@@ -1,4 +1,4 @@
-var Preset = [
+var Presets = [
     "none",
     
     // (1..8) Piano

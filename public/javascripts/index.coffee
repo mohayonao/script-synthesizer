@@ -93,7 +93,7 @@ jQuery ->
 
     # UI
     PresetSelector = $("#preset")
-    Preset.forEach (name, i)->
+    Presets.forEach (name, i)->
         name = "000#{i}".substr(-3) + " :#{name}"
         PresetSelector.append $("<option>").text(name).attr("value", i)
     PresetSelector.on "change", ->

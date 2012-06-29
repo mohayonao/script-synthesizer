@@ -115,7 +115,7 @@
     SynthDefEditor.onFocused = false;
     window.Editor = SynthDefEditor;
     PresetSelector = $("#preset");
-    Preset.forEach(function(name, i) {
+    Presets.forEach(function(name, i) {
       name = ("000" + i).substr(-3) + (" :" + name);
       return PresetSelector.append($("<option>").text(name).attr("value", i));
     });
