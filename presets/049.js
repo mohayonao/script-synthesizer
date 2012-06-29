@@ -2,7 +2,7 @@
  * 049: String Ensemble 1
  * author: @mohayonao
  */
-function synthdef(freq) {
+function synthdef(freq, notenumber, velocity) {
     var op1 = T("*", T("oscx", T("phasor", freq * 0.25), 0.3).set({fb:0.18}),
                      T("adsr", "24db", 10, 100, 0.25, 250));
     var op2 = T("*", T("oscx", T("phasor", freq), 0.65),
