@@ -2,7 +2,7 @@
  * 009: Celesta
  * author: @mohayonao
  */
-function synthdef(freq) {
+function synthdef(freq, notenumber, velocity) {
     var op1 = T("oscx", T("phasor", 200), 0.01).set({fb:0.1});
     var op2 = T("*", T("oscx", T("+", T("phasor", freq), op1), 0.4),
                      T("adsr", "32db", 0, 450, 0.4, 500));
