@@ -90,18 +90,9 @@
             
             <div class="" style="padding-top:15px">
               <div class="pull-left">
-                <div class="alert alert-info" style="display:none;">
-                  <strong>TIPS:</strong> Use C-x C-e to eval SynthDef
+                <div class="alert" id="alert" style="display:none">
+                  <strong></strong> <span class="msg"></span>
                 </div>
-                
-                <div class="alert alert-success" style="display:none;">
-                  <strong>WELL DONE!</strong> That's a nice!!
-                </div>
-                
-                <div class="alert alert-error" style="display:none;">
-                  <strong>OH SNAP!</strong> <span id="errmsg"></span>
-                </div>
-                
               </div>
               <button class="btn btn-primary btn-large pull-right" id="evalSynthDef">
                 Eval SynthDef
@@ -207,6 +198,7 @@
   <script type="text/javascript" src="/javascripts/lib/bootstrap.min.js"></script>
   <script type="text/javascript" src="/javascripts/lib/codemirror.js"></script>
   <script type="text/javascript" src="/javascripts/lib/javascript.js"></script>
+  <script type="text/javascript" src="/javascripts/lib/emacs.js"></script>
   <script type="text/javascript" src="/javascripts/lib/timbre.min.js"></script>
   <script type="text/javascript" src="/javascripts/webmidilink.js"></script>
   <script type="text/javascript" src="/javascripts/waveviewer.js"></script>

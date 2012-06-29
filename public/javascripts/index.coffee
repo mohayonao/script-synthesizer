@@ -36,10 +36,9 @@ jQuery ->
         if def != null
             MidiReceiver.onAllSoundOff()
             Synth.def = def
-            if verbose then showMessage "success"
+            if verbose then showMessage "success", "That's a nice!!"
         else if verbose
-            $("#errmsg").text msg
-            showMessage "error"
+            showMessage "error", msg
         $("#evalSynthDef").attr(disabled:true)
 
 
@@ -67,23 +66,26 @@ jQuery ->
 
     # SynthDef Editor
     SynthDefEditor = CodeMirror.fromTextArea $("#editor").get(0), {
-        theme:"blackboard", lineNumbers:true,
+        theme:"blackboard", lineNumbers:true, keyMap:"emacs",
         onChange: ->
             $("#evalSynthDef").attr(disabled:false)
-        onKeyEvent: (self, e)->
-            return unless e.ctrlKey
-            e.preventDefault()
-            if e.type is "keydown"
-                if SynthDefEditor.prevKeyCode is 88
-                    switch e.keyCode
-                        when 69 # C-x C-e
-                            Synth.eval self.getValue().trim(), true
-                SynthDefEditor.prevKeyCode = e.keyCode
         onFocus: (self)->
             self.onFocused = true
-            showMessage "info"
-        onBlur : (self)-> self.onFocused = false
+            showMessage "info", "Use C-x C-e to eval SynthDef."
+        onBlur : (self)->
+            self.onFocused = false
     }
+    CodeMirror.keyMap["emacs-Ctrl-X"]["Ctrl-E"] = (e)->
+        Synth.eval SynthDefEditor.getValue().trim(), true
+    CodeMirror.keyMap["emacs-Ctrl-X"]["Ctrl-S"] = (e)->
+        localStorage.setItem "SynthDef", SynthDefEditor.getValue().trim()
+        showMessage "info", "Saved this SynthDef."
+    CodeMirror.keyMap["emacs-Ctrl-X"]["Ctrl-F"] = (e)->
+        def = localStorage.getItem "SynthDef"
+        if def
+            SynthDefEditor.setValue def
+            showMessage "info", "Loaded a SynthDef."
+
     SynthDefEditor.prevKeyCode = 0
     SynthDefEditor.onFocused   = false
     window.Editor = SynthDefEditor
@@ -119,14 +121,14 @@ jQuery ->
     $("#evalSynthDef").on "click", ->
         Synth.eval SynthDefEditor.getValue().trim(), true
 
-    showMessage = (type)->
-        $("#tabSynthDef .alert.alert-info").hide()
-        $("#tabSynthDef .alert.alert-success").hide()
-        $("#tabSynthDef .alert.alert-error").hide()
-        switch type
-            when "info"    then $("#tabSynthDef .alert.alert-info").show()
-            when "success" then $("#tabSynthDef .alert.alert-success").show()
-            when "error"   then $("#tabSynthDef .alert.alert-error").show()
+    showMessage = (type, msg)->
+        $alert = $("#alert")
+        ["info", "success", "error"].forEach (x)-> $alert.removeClass "alert-#{x}"
+        $alert.addClass("alert-#{type}").css("display", "block")
+        $("strong", $alert).text {
+            info:"INFO:", success:"WELL DONE!", error:"OH SNAP!"
+        }[type] or ""
+        $(".msg", $alert).text msg
 
 
     # KeyMapping
