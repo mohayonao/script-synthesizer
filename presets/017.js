@@ -2,7 +2,7 @@
  * 017: Drawbar Organ
  * author: @mohayonao
  */
-function synthdef(freq) {
+function synthdef(freq, notenumber, velocity) {
     var synth = T("*", T("+", T("sin", freq),
                               T("sin", freq * 2, 0.5),
                               T("sin", freq * 3, 0.25),
