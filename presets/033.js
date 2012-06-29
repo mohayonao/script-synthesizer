@@ -2,7 +2,7 @@
  * 033: Acoustic Bass
  * author: @mohayonao
  */
-function synthdef(freq) {
+function synthdef(freq, notenumber, velocity) {
     var op1 = T("*", T("oscx", T("phasor", freq * 0.25), 0.6).set({fb:0.15}),
                      T("adsr", "24db", 5, 150, 0.2, 250));
     var op2 = T("*", T("oscx", T("+", T("phasor", freq - 2), op1), 0.25),
