@@ -30,6 +30,9 @@ body {
     background: transparent;
     border-color: transparent;
 }
+.CodeMirror {
+  font-family: "Courier", monospace;
+}
 #content {
     height: 350px
 }
