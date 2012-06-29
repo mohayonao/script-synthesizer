@@ -2,7 +2,7 @@
  * 013: Marimba
  * author: @mohayonao
  */
-function synthdef(freq) {
+function synthdef(freq, notenumber, velocity) {
     var op1 = T("oscx", T("phasor", freq * 2), 0.2);
     var op2 = T("*", T("oscx", T("+", T("phasor", freq), op1), 0.5),
                       T("adsr", "32db", 0, 200, 0.2, 100));
