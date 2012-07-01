@@ -2,6 +2,7 @@
 jQuery ->
     timbre.utils.exports "mtof"
 
+
     # Query String
     Q = do ->
         Q = {}
@@ -79,13 +80,9 @@ jQuery ->
     CodeMirror.keyMap["emacs-Ctrl-X"]["Ctrl-E"] = (e)->
         Synth.eval SynthDefEditor.getValue().trim(), true
     CodeMirror.keyMap["emacs-Ctrl-X"]["Ctrl-S"] = (e)->
-        localStorage.setItem "SynthDef", SynthDefEditor.getValue().trim()
-        showMessage "info", "Saved this SynthDef."
+        $("#dropdown-save").click()
     CodeMirror.keyMap["emacs-Ctrl-X"]["Ctrl-F"] = (e)->
-        def = localStorage.getItem "SynthDef"
-        if def
-            SynthDefEditor.setValue def
-            showMessage "info", "Loaded a SynthDef."
+        $("#dropdown-load").click()
 
     SynthDefEditor.prevKeyCode = 0
     SynthDefEditor.onFocused   = false
@@ -132,6 +129,76 @@ jQuery ->
         $(".msg", $alert).text msg
 
 
+    # localStorage
+    SynthDefList = localStorage.getItem("SynthDefList")
+    if typeof SynthDefList is "string"
+        SynthDefList = JSON.parse SynthDefList
+    else SynthDefList = []
+    SynthDefList.findIndexOf = (name) ->
+        for i in [0...SynthDefList.length]
+            if SynthDefList[i][0] is name then return i
+        return -1
+    SynthDefList.update = ->
+        SynthDefList.sort (a, b) -> if a[0] < b[0] then -1 else +1
+        list = SynthDefList.map (x)-> x[0]
+        $("#loadDialog input").typeahead source:list
+        $("#saveDialog input").typeahead source:list
+
+    isDialog = false
+    $("#loadDialog").on "shown", ->
+        isDialog = true
+
+    $("#loadDialog").on "hidden", ->
+        isDialog = false
+
+    $("#loadDialog #exec").on "click", ->
+        name = $("#loadDialog input").val().trim()
+        if /^[_a-zA-Z$][_a-zA-Z0-9$]*$/.test name
+            index = SynthDefList.findIndexOf name
+            if index is -1
+                showMessage "error", "Cannot find a SynthDef '#{name}'"
+            else
+                SynthDefEditor.setValue SynthDefList[index][1]
+                showMessage "success", "Loaded the SynthDef '#{name}'"
+                $("#loadDialog").modal "hide"
+        else if /^https?:\/\/.*$/.test name
+            url = encodeURIComponent name
+            $.get "/api/synthdef/?url=#{url}", (res)->
+                data = JSON.parse res
+                if data.status is 200
+                    SynthDefEditor.setValue data.body
+                    showMessage "success", "Loaded the SynthDef '#{name}'"
+                    $("#loadDialog").modal "hide"
+        else showMessage "error", "Invalid name '#{name}'"
+
+    $("#saveDialog").on "shown", ->
+       isDialog = true
+
+    $("#saveDialog").on "hidden", ->
+        isDialog = false
+
+    $("#saveDialog #exec").on "click", ->
+        name = $("#saveDialog input").val().trim()
+        if /^[_a-zA-Z$][_a-zA-Z0-9$]*$/.test name
+            code = SynthDefEditor.getValue().trim()
+            index = SynthDefList.findIndexOf name
+            if code is "" # delete
+                if index != -1
+                    SynthDefList.splice index, 1
+                    SynthDefList.update()
+                    showMessage "success", "Delete the SynthDef '#{name}'"
+            else
+                if index == -1
+                    SynthDefList.push [name, code]
+                    SynthDefList.update()
+                    showMessage "success", "Save a new SynthDef '#{name}'"
+                else
+                    SynthDefList[index] = [name, code]
+                    showMessage "success", "Update the SynthDef '#{name}'"
+                localStorage.setItem "SynthDefList", JSON.stringify(SynthDefList)
+                $("#saveDialog").modal "hide"
+        else showMessage "error", "Invalid name '#{name}'"
+
     # KeyMapping
     KeyMapping = {
         90 : 48 # Z -> C2
@@ -172,14 +239,14 @@ jQuery ->
     }
     window.addEventListener "keydown", (e)->
         return if e.ctrlKey or e.altKey or e.metaKey
-        return if SynthDefEditor.onFocused
+        return if SynthDefEditor.onFocused or isDialog
         return if KeyMapping.keyDown[e.keyCode]
         notenumber = KeyMapping[e.keyCode]
         if notenumber then MidiReceiver.onNoteOn notenumber, 64
         KeyMapping.keyDown[e.keyCode] = true
     window.addEventListener "keyup", (e)->
         return if e.ctrlKey or e.altKey or e.metaKey
-        return if SynthDefEditor.onFocused
+        return if SynthDefEditor.onFocused or isDialog
         notenumber = KeyMapping[e.keyCode]
         if notenumber then MidiReceiver.onNoteOff notenumber, 0
         KeyMapping.keyDown[e.keyCode] = false

@@ -3,7 +3,7 @@
   "use strict";
 
   jQuery(function() {
-    var KeyMapping, MidiReceiver, PresetSelector, Q, Synth, SynthDefEditor, Viewer, showMessage;
+    var KeyMapping, MidiReceiver, PresetSelector, Q, Synth, SynthDefEditor, SynthDefList, Viewer, isDialog, showMessage;
     timbre.utils.exports("mtof");
     Q = (function() {
       var search;
@@ -103,16 +103,10 @@
       return Synth["eval"](SynthDefEditor.getValue().trim(), true);
     };
     CodeMirror.keyMap["emacs-Ctrl-X"]["Ctrl-S"] = function(e) {
-      localStorage.setItem("SynthDef", SynthDefEditor.getValue().trim());
-      return showMessage("info", "Saved this SynthDef.");
+      return $("#dropdown-save").click();
     };
     CodeMirror.keyMap["emacs-Ctrl-X"]["Ctrl-F"] = function(e) {
-      var def;
-      def = localStorage.getItem("SynthDef");
-      if (def) {
-        SynthDefEditor.setValue(def);
-        return showMessage("info", "Loaded a SynthDef.");
-      }
+      return $("#dropdown-load").click();
     };
     SynthDefEditor.prevKeyCode = 0;
     SynthDefEditor.onFocused = false;
@@ -172,6 +166,108 @@
       }[type] || "");
       return $(".msg", $alert).text(msg);
     };
+    SynthDefList = localStorage.getItem("SynthDefList");
+    if (typeof SynthDefList === "string") {
+      SynthDefList = JSON.parse(SynthDefList);
+    } else {
+      SynthDefList = [];
+    }
+    SynthDefList.findIndexOf = function(name) {
+      var i, _i, _ref;
+      for (i = _i = 0, _ref = SynthDefList.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+        if (SynthDefList[i][0] === name) {
+          return i;
+        }
+      }
+      return -1;
+    };
+    SynthDefList.update = function() {
+      var list;
+      SynthDefList.sort(function(a, b) {
+        if (a[0] < b[0]) {
+          return -1;
+        } else {
+          return +1;
+        }
+      });
+      list = SynthDefList.map(function(x) {
+        return x[0];
+      });
+      $("#loadDialog input").typeahead({
+        source: list
+      });
+      return $("#saveDialog input").typeahead({
+        source: list
+      });
+    };
+    isDialog = false;
+    $("#loadDialog").on("shown", function() {
+      return isDialog = true;
+    });
+    $("#loadDialog").on("hidden", function() {
+      return isDialog = false;
+    });
+    $("#loadDialog #exec").on("click", function() {
+      var index, name, url;
+      name = $("#loadDialog input").val().trim();
+      if (/^[_a-zA-Z$][_a-zA-Z0-9$]*$/.test(name)) {
+        index = SynthDefList.findIndexOf(name);
+        if (index === -1) {
+          return showMessage("error", "Cannot find a SynthDef '" + name + "'");
+        } else {
+          SynthDefEditor.setValue(SynthDefList[index][1]);
+          showMessage("success", "Loaded the SynthDef '" + name + "'");
+          return $("#loadDialog").modal("hide");
+        }
+      } else if (/^https?:\/\/.*$/.test(name)) {
+        url = encodeURIComponent(name);
+        return $.get("/api/synthdef/?url=" + url, function(res) {
+          var data;
+          data = JSON.parse(res);
+          if (data.status === 200) {
+            SynthDefEditor.setValue(data.body);
+            showMessage("success", "Loaded the SynthDef '" + name + "'");
+            return $("#loadDialog").modal("hide");
+          }
+        });
+      } else {
+        return showMessage("error", "Invalid name '" + name + "'");
+      }
+    });
+    $("#saveDialog").on("shown", function() {
+      return isDialog = true;
+    });
+    $("#saveDialog").on("hidden", function() {
+      return isDialog = false;
+    });
+    $("#saveDialog #exec").on("click", function() {
+      var code, index, name;
+      name = $("#saveDialog input").val().trim();
+      if (/^[_a-zA-Z$][_a-zA-Z0-9$]*$/.test(name)) {
+        code = SynthDefEditor.getValue().trim();
+        index = SynthDefList.findIndexOf(name);
+        if (code === "") {
+          if (index !== -1) {
+            SynthDefList.splice(index, 1);
+            SynthDefList.update();
+            return showMessage("success", "Delete the SynthDef '" + name + "'");
+          }
+        } else {
+          if (index === -1) {
+            SynthDefList.push([name, code]);
+            SynthDefList.update();
+            showMessage("success", "Save a new SynthDef '" + name + "'");
+          } else {
+            SynthDefList[index] = [name, code];
+            showMessage("success", "Update the SynthDef '" + name + "'");
+          }
+          localStorage.setItem("SynthDefList", JSON.stringify(SynthDefList));
+          return $("#saveDialog").modal("hide");
+        }
+      } else {
+        return showMessage("error", "Invalid name '" + name + "'");
+      }
+    });
     KeyMapping = {
       90: 48,
       83: 49,
@@ -213,7 +309,7 @@
       if (e.ctrlKey || e.altKey || e.metaKey) {
         return;
       }
-      if (SynthDefEditor.onFocused) {
+      if (SynthDefEditor.onFocused || isDialog) {
         return;
       }
       if (KeyMapping.keyDown[e.keyCode]) {
@@ -230,7 +326,7 @@
       if (e.ctrlKey || e.altKey || e.metaKey) {
         return;
       }
-      if (SynthDefEditor.onFocused) {
+      if (SynthDefEditor.onFocused || isDialog) {
         return;
       }
       notenumber = KeyMapping[e.keyCode];

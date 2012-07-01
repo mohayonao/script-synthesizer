@@ -14,15 +14,38 @@
   <!-- Navigation Bar ======================================== -->
   <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
-      <div class="pull-right">
-        <a class="brand">Script Synthesizer</a>
-      </div>
-      
-      <div class="container-fluid">
-        <form class="navbar-form">
-          <select id="preset" class="large">
-          </select>
-        </form>
+        <div class="pull-right">
+          <a class="brand">Script Synthesizer</a>
+        </div>
+        <div class="container-fluid">
+          <form class="navbar-form pull-left">
+            <select id="preset" class="input-xlarge"></select>
+          </form>
+          
+          <div class="btn-group pull-left span2">
+            <button class="btn"><i class="icon-cog"></i></button>
+            <button class="btn dropdown-toggle" data-toggle="dropdown">
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <!-- <li> -->
+              <!--   <a href="javascript:void(0)"> -->
+              <!--     Volume -->
+              <!--   </a> -->
+              <!-- </li> -->
+              <!-- <li class="divider"></li> -->
+              <li>
+                <a href="#loadDialog" data-toggle="modal" id="dropdown-load">
+                  Load a SynthDef
+                </a>
+              </li>
+              <li>
+                <a href="#saveDialog" data-toggle="modal" id="dropdown-save">
+                  Save this SynthDef
+                </a>
+              </li>
+            </ul>
+          </div>
       </div>
     </div>
   </div>
@@ -47,7 +70,7 @@
           <div class="tab-pane active" id="tabSynthDef">
             <textarea id="editor">// Your SynthDef code goes here.</textarea>
             
-            <div class="" style="padding-top:15px">
+            <div style="padding-top:15px">
               <div class="pull-left">
                 <div class="alert" id="alert" style="display:none">
                   <strong></strong> <span class="msg"></span>
@@ -163,6 +186,45 @@
     
   </div>
   <!-- ======================================== Main -->
+  
+  
+  <!-- LoadDialog ======================================== -->
+  <div class="modal hide" id="loadDialog">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal">×</button>
+      <h3>Load a SynthDef</h3>
+    </div>
+    <form class="modal-body form-horizontal">
+      <div class="control-group">
+        <label class="control-label">Find file or URL</label>
+        <div class="controls">
+          <input type="text" class="input-xlarge" data-provide="typeahead" />
+          <div class="btn btn-primary" id="exec">Load</div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <!-- ======================================== LoadDialog -->
+  
+  
+  <!-- SaveDialog ======================================== -->
+  <div class="modal hide" id="saveDialog">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal">×</button>
+      <h3>Save this SynthDef</h3>
+    </div>
+    <form class="modal-body form-horizontal">
+      <div class="control-group">
+        <label class="control-label">Name</label>
+        <div class="controls">
+          <input type="text" class="input-xlarge" data-provide="typeahead" />
+          <div class="btn btn-primary" id="exec">Save</div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <!-- ======================================== SaveDialog -->
+  
   
   <script type="text/javascript" src="/javascripts/lib/jquery.min.js"></script>
   <script type="text/javascript" src="/javascripts/lib/bootstrap.min.js"></script>
